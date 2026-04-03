@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_partner_form_sirene" model="ir.ui.view">
+        <field name="name">res.partner.form.sirene</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+
+            <!-- SIRENE status badge below VAT field -->
+            <xpath expr="//field[@name='vat']" position="after">
+                <field name="sirene_sync_state"
+                       widget="badge"
+                       string="SIRENE Status"
+                       decoration-success="sirene_sync_state == 'ok'"
+                       decoration-warning="sirene_sync_state == 'pending'"
+                       decoration-danger="sirene_sync_state == 'error'"
+                       decoration-muted="sirene_sync_state in ('unchecked', 'ignored')"
+                       invisible="not sirene_eligible or not vat"
+                       readonly="1"/>
+            </xpath>
+
+            <!-- SIREN field below Reference -->
+            <xpath expr="//field[@name='ref']" position="after">
+                <field name="siren"
+                       string="SIREN"
+                       placeholder="123456789"
+                       invisible="not is_company"/>
+            </xpath>
+
+            <!-- Banners -->
+            <xpath expr="//sheet" position="before">
+                <!-- Orange banner: pending -->
+                <div class="alert alert-warning mb-0 d-flex align-items-center"
+                     role="alert"
+                     invisible="sirene_sync_state != 'pending'">
+                    <i class="fa fa-exclamation-triangle me-2"/>
+                    <span>
+                        Update available from SIRENE —
+                        <a name="action_sirene_check" type="object" class="fw-bold">
+                            Click to review
+                        </a>
+                    </span>
+                </div>
+                <!-- Red banner: error -->
+                <div class="alert alert-danger mb-0 d-flex align-items-center"
+                     role="alert"
+                     invisible="sirene_sync_state != 'error'">
+                    <i class="fa fa-times-circle me-2"/>
+                    <span>SIRENE Error: <field name="sirene_last_error" readonly="1"/></span>
+                </div>
+            </xpath>
+
+            <!-- INSEE tab -->
+            <xpath expr="//notebook" position="inside">
+                <page string="INSEE / SIRENE"
+                      name="sirene_tab"
+                      invisible="not sirene_eligible">
+                    <group>
+                        <group string="Legal Information">
+                            <field name="sirene_denomination" readonly="1"/>
+                            <field name="sirene_siren" readonly="1"/>
+                            <field name="sirene_siret_siege" readonly="1"/>
+                            <field name="sirene_naf_activity" readonly="1"/>
+                            <field name="sirene_naf" readonly="1"/>
+                            <field name="sirene_date_creation" readonly="1"/>
+                        </group>
+                        <group string="Synchronisation Status">
+                            <field name="sirene_sync_state" readonly="1"/>
+                            <field name="sirene_last_check_date" readonly="1"/>
+                            <field name="sirene_last_error" readonly="1"
+                                   invisible="not sirene_last_error"/>
+                            <div colspan="2" class="mt-2">
+                                <button name="action_sirene_check"
+                                        type="object"
+                                        string="Check via SIRENE"
+                                        class="btn btn-primary"
+                                        invisible="not vat"/>
+                            </div>
+                        </group>
+                    </group>
+                    <group string="Establishments">
+                        <field name="sirene_etablissement_ids" nolabel="1" readonly="1">
+                            <list>
+                                <field name="siret"/>
+                                <field name="is_siege" widget="boolean_favorite" optional="show"/>
+                                <field name="etat"
+                                       decoration-success="etat == 'A'"
+                                       decoration-danger="etat == 'F'"
+                                       widget="badge"
+                                       optional="show"/>
+                                <field name="naf" optional="show"/>
+                                <field name="naf_activity"/>
+                                <field name="street" optional="show"/>
+                                <field name="zip" optional="show"/>
+                                <field name="city" optional="show"/>
+                                <field name="date_creation" optional="show"/>
+                                <field name="date_fermeture" optional="show"/>
+                            </list>
+                        </field>
+                    </group>
+
+                </page>
+            </xpath>
+
+        </field>
+    </record>
+
+</odoo>

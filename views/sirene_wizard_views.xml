@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_sirene_validation_wizard_form" model="ir.ui.view">
+        <field name="name">sirene.validation.wizard.form</field>
+        <field name="model">sirene.validation.wizard</field>
+        <field name="arch" type="xml">
+            <form string="SIRENE Address Update">
+                <sheet>
+                    <div class="oe_title">
+                        <h4>
+                            Address update —
+                            <field name="partner_id" readonly="1"/>
+                        </h4>
+                    </div>
+                    <div class="alert alert-info" role="alert">
+                        <i class="fa fa-info-circle me-1"/>
+                        Only fields with discrepancies from Odoo data are shown.
+                        Check the fields to update then click <b>Apply</b>.
+                    </div>
+                    <field name="line_ids" nolabel="1">
+                        <list editable="bottom" create="false" delete="false">
+                            <field name="field_name" column_invisible="1"/>
+                            <field name="field_label" string="Field" readonly="1"/>
+                            <field name="current_value" string="Current Value (Odoo)" readonly="1"/>
+                            <field name="proposed_value" string="INSEE SIRENE Value" readonly="1"/>
+                            <field name="apply" string="Apply"/>
+                        </list>
+                    </field>
+                </sheet>
+                <footer>
+                    <button name="action_apply"
+                            string="Apply selections"
+                            type="object"
+                            class="btn-primary"/>
+                    <button name="action_ignore"
+                            string="Ignore all"
+                            type="object"
+                            class="btn-secondary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+</odoo>

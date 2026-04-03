@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+
+    <record id="ir_cron_sirene_sync" model="ir.cron">
+        <field name="name">SIRENE — Daily Partner Synchronisation</field>
+        <field name="model_id" ref="base.model_res_partner"/>
+        <field name="state">code</field>
+        <field name="code">model._cron_sirene_sync()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="active">False</field>
+        <field name="nextcall" eval="(datetime.now() + timedelta(days=1)).replace(hour=2, minute=0, second=0, microsecond=0)"/>
+    </record>
+
+</odoo>

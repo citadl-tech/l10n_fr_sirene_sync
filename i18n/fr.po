@@ -1,0 +1,421 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* l10n_fr_sirene_sync
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 18.0-20260324\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-04-03 12:18+0000\n"
+"PO-Revision-Date: 2026-04-03 12:18+0000\n"
+"Last-Translator: Antoine Courouble <antoine@citadl.fr>\n"
+"Language-Team: French <fr@li.org>\n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#. module: l10n_fr_sirene_sync
+#: model_terms:ir.ui.view,arch_db:l10n_fr_sirene_sync.view_partner_form_sirene
+msgid "123456789"
+msgstr "123456789"
+
+#. module: l10n_fr_sirene_sync
+#. odoo-python
+#: code:addons/l10n_fr_sirene_sync/wizard/sirene_validation_wizard.py:0
+msgid "<b>Retained fields:</b>"
+msgstr "<b>Champs conservés :</b>"
+
+#. module: l10n_fr_sirene_sync
+#: model_terms:ir.ui.view,arch_db:l10n_fr_sirene_sync.view_sirene_validation_wizard_form
+msgid ""
+"<i class=\"fa fa-info-circle me-1\"/>\n"
+"                        Only fields with discrepancies from Odoo data are shown.\n"
+"                        Check the fields to update then click <b>Apply</b>."
+msgstr ""
+"<i class=\"fa fa-info-circle me-1\"/>\n"
+"                        Seuls les champs présentant un écart avec les données Odoo sont affichés.\n"
+"                        Cochez les champs à mettre à jour puis cliquez sur <b>Appliquer</b>."
+
+#. module: l10n_fr_sirene_sync
+#: model:ir.model.fields.selection,name:l10n_fr_sirene_sync.selection__sirene_etablissement__etat__a
+msgid "Active"
+msgstr "Actif"
+
+#. module: l10n_fr_sirene_sync
+#: model:ir.model.fields,field_description:l10n_fr_sirene_sync.field_res_partner__sirene_naf_activity
+#: model:ir.model.fields,field_description:l10n_fr_sirene_sync.field_res_users__sirene_naf_activity
+#: model:ir.model.fields,field_description:l10n_fr_sirene_sync.field_sirene_etablissement__naf_activity
+msgid "Activity"
+msgstr "Activité"
+
+#. module: l10n_fr_sirene_sync
+#: model_terms:ir.ui.view,arch_db:l10n_fr_sirene_sync.view_sirene_validation_wizard_form
+msgid "Address update —"
+msgstr "Mise à jour adresse —"
+
+#. module: l10n_fr_sirene_sync
+#: model:ir.model.fields,field_description:l10n_fr_sirene_sync.field_sirene_validation_wizard_line__apply
+#: model_terms:ir.ui.view,arch_db:l10n_fr_sirene_sync.view_sirene_validation_wizard_form
+msgid "Apply"
+msgstr "Appliquer"
+
+#. module: l10n_fr_sirene_sync
+#: model_terms:ir.ui.view,arch_db:l10n_fr_sirene_sync.view_sirene_validation_wizard_form
+msgid "Apply selections"
+msgstr "Appliquer les sélections"
+
+#. module: l10n_fr_sirene_sync
+#: model_terms:ir.ui.view,arch_db:l10n_fr_sirene_sync.view_sirene_validation_wizard_form
+msgid "Cancel"
+msgstr "Annuler"
+
+#. module: l10n_fr_sirene_sync
+#: model_terms:ir.ui.view,arch_db:l10n_fr_sirene_sync.view_partner_form_sirene
+msgid "Check via SIRENE"
+msgstr "Vérifier via SIRENE"
+
+#. module: l10n_fr_sirene_sync
+#: model:ir.model.fields,field_description:l10n_fr_sirene_sync.field_sirene_etablissement__city
+msgid "City"
+msgstr "Ville"
+
+#. module: l10n_fr_sirene_sync
+#: model_terms:ir.ui.view,arch_db:l10n_fr_sirene_sync.view_partner_form_sirene
+msgid "Click to review"
+msgstr "Cliquez pour valider"
+
+#. module: l10n_fr_sirene_sync
+#: model:ir.model.fields.selection,name:l10n_fr_sirene_sync.selection__sirene_etablissement__etat__f
+msgid "Closed"
+msgstr "Fermé"
+
+#. module: l10n_fr_sirene_sync
+#: model:ir.model.fields,field_description:l10n_fr_sirene_sync.field_sirene_etablissement__date_fermeture
+msgid "Closure Date"
+msgstr "Date de clôture"
+
+#. module: l10n_fr_sirene_sync
+#: model:ir.model,name:l10n_fr_sirene_sync.model_res_partner
+msgid "Contact"
+msgstr "Contact"
+
+#. module: l10n_fr_sirene_sync
+#: model:ir.model.fields,field_description:l10n_fr_sirene_sync.field_sirene_etablissement__create_uid
+#: model:ir.model.fields,field_description:l10n_fr_sirene_sync.field_sirene_validation_wizard__create_uid
+#: model:ir.model.fields,field_description:l10n_fr_sirene_sync.field_sirene_validation_wizard_line__create_uid
+msgid "Created by"
+msgstr "Créé par"
+
+#. module: l10n_fr_sirene_sync
+#: model:ir.model.fields,field_description:l10n_fr_sirene_sync.field_sirene_etablissement__create_date
+#: model:ir.model.fields,field_description:l10n_fr_sirene_sync.field_sirene_validation_wizard__create_date
+#: model:ir.model.fields,field_description:l10n_fr_sirene_sync.field_sirene_validation_wizard_line__create_date
+msgid "Created on"
+msgstr "Créé le"
+
+#. module: l10n_fr_sirene_sync
+#: model:ir.model.fields,field_description:l10n_fr_sirene_sync.field_res_partner__sirene_date_creation
+#: model:ir.model.fields,field_description:l10n_fr_sirene_sync.field_res_users__sirene_date_creation
+#: model:ir.model.fields,field_description:l10n_fr_sirene_sync.field_sirene_etablissement__date_creation
+msgid "Creation Date"
+msgstr "Date de création"
+
+#. module: l10n_fr_sirene_sync
+#: model:ir.model.fields,field_description:l10n_fr_sirene_sync.field_sirene_validation_wizard_line__current_value
+#: model_terms:ir.ui.view,arch_db:l10n_fr_sirene_sync.view_sirene_validation_wizard_form
+msgid "Current Value (Odoo)"
+msgstr "Valeur actuelle (Odoo)"
+
+#. module: l10n_fr_sirene_sync
+#. odoo-python
+#: code:addons/l10n_fr_sirene_sync/models/res_partner.py:0
+msgid "Data up to date — no changes needed."
+msgstr "Données à jour — aucune modification nécessaire."
+
+#. module: l10n_fr_sirene_sync
+#: model:ir.model.fields,field_description:l10n_fr_sirene_sync.field_sirene_etablissement__display_name
+#: model:ir.model.fields,field_description:l10n_fr_sirene_sync.field_sirene_validation_wizard__display_name
+#: model:ir.model.fields,field_description:l10n_fr_sirene_sync.field_sirene_validation_wizard_line__display_name
+msgid "Display Name"
+msgstr "Nom affiché"
+
+#. module: l10n_fr_sirene_sync
+#: model:ir.model.fields.selection,name:l10n_fr_sirene_sync.selection__res_partner__sirene_sync_state__error
+msgid "Error"
+msgstr "Erreur"
+
+#. module: l10n_fr_sirene_sync
+#. odoo-python
+#: code:addons/l10n_fr_sirene_sync/models/res_partner.py:0
+msgid ""
+"Error calling INSEE SIRENE API:\n"
+"%s"
+msgstr ""
+"Erreur lors de l'appel à l'API INSEE SIRENE :\n"
+"%s"
+
+#. module: l10n_fr_sirene_sync
+#: model_terms:ir.ui.view,arch_db:l10n_fr_sirene_sync.view_partner_form_sirene
+msgid "Establishments"
+msgstr "Établissements"
+
+#. module: l10n_fr_sirene_sync
+#: model:ir.model.fields,field_description:l10n_fr_sirene_sync.field_sirene_validation_wizard_line__field_label
+#: model_terms:ir.ui.view,arch_db:l10n_fr_sirene_sync.view_sirene_validation_wizard_form
+msgid "Field"
+msgstr "Champ"
+
+#. module: l10n_fr_sirene_sync
+#: model:ir.model.fields,field_description:l10n_fr_sirene_sync.field_sirene_validation_wizard_line__field_name
+msgid "Field Name"
+msgstr "Nom du champ"
+
+#. module: l10n_fr_sirene_sync
+#: model:ir.model.fields,field_description:l10n_fr_sirene_sync.field_sirene_validation_wizard__line_ids
+msgid "Fields to Update"
+msgstr "Champs à mettre à jour"
+
+#. module: l10n_fr_sirene_sync
+#: model:ir.model.fields,field_description:l10n_fr_sirene_sync.field_sirene_etablissement__is_siege
+msgid "Head Office"
+msgstr "Siège"
+
+#. module: l10n_fr_sirene_sync
+#: model:ir.model.fields,field_description:l10n_fr_sirene_sync.field_sirene_etablissement__id
+#: model:ir.model.fields,field_description:l10n_fr_sirene_sync.field_sirene_validation_wizard__id
+#: model:ir.model.fields,field_description:l10n_fr_sirene_sync.field_sirene_validation_wizard_line__id
+msgid "ID"
+msgstr "ID"
+
+#. module: l10n_fr_sirene_sync
+#: model_terms:ir.ui.view,arch_db:l10n_fr_sirene_sync.view_partner_form_sirene
+msgid "INSEE / SIRENE"
+msgstr "INSEE / SIRENE"
+
+#. module: l10n_fr_sirene_sync
+#: model:ir.model.fields,field_description:l10n_fr_sirene_sync.field_sirene_validation_wizard_line__proposed_value
+#: model_terms:ir.ui.view,arch_db:l10n_fr_sirene_sync.view_sirene_validation_wizard_form
+msgid "INSEE SIRENE Value"
+msgstr "Valeur SIRENE (INSEE)"
+
+#. module: l10n_fr_sirene_sync
+#: model_terms:ir.ui.view,arch_db:l10n_fr_sirene_sync.view_sirene_validation_wizard_form
+msgid "Ignore all"
+msgstr "Ignorer tout"
+
+#. module: l10n_fr_sirene_sync
+#: model:ir.model.fields.selection,name:l10n_fr_sirene_sync.selection__res_partner__sirene_sync_state__ignored
+msgid "Ignored"
+msgstr "Ignoré"
+
+#. module: l10n_fr_sirene_sync
+#: model:ir.model.fields,field_description:l10n_fr_sirene_sync.field_res_partner__sirene_last_check_date
+#: model:ir.model.fields,field_description:l10n_fr_sirene_sync.field_res_users__sirene_last_check_date
+msgid "Last SIRENE Check"
+msgstr "Dernier contrôle SIRENE"
+
+#. module: l10n_fr_sirene_sync
+#: model:ir.model.fields,field_description:l10n_fr_sirene_sync.field_res_partner__sirene_last_error
+#: model:ir.model.fields,field_description:l10n_fr_sirene_sync.field_res_users__sirene_last_error
+msgid "Last SIRENE Error"
+msgstr "Dernière erreur SIRENE"
+
+#. module: l10n_fr_sirene_sync
+#: model:ir.model.fields,field_description:l10n_fr_sirene_sync.field_sirene_etablissement__write_uid
+#: model:ir.model.fields,field_description:l10n_fr_sirene_sync.field_sirene_validation_wizard__write_uid
+#: model:ir.model.fields,field_description:l10n_fr_sirene_sync.field_sirene_validation_wizard_line__write_uid
+msgid "Last Updated by"
+msgstr "Mis à jour par"
+
+#. module: l10n_fr_sirene_sync
+#: model:ir.model.fields,field_description:l10n_fr_sirene_sync.field_sirene_etablissement__write_date
+#: model:ir.model.fields,field_description:l10n_fr_sirene_sync.field_sirene_validation_wizard__write_date
+#: model:ir.model.fields,field_description:l10n_fr_sirene_sync.field_sirene_validation_wizard_line__write_date
+msgid "Last Updated on"
+msgstr "Mis à jour le"
+
+#. module: l10n_fr_sirene_sync
+#: model_terms:ir.ui.view,arch_db:l10n_fr_sirene_sync.view_partner_form_sirene
+msgid "Legal Information"
+msgstr "Informations juridiques"
+
+#. module: l10n_fr_sirene_sync
+#: model:ir.model.fields,field_description:l10n_fr_sirene_sync.field_res_partner__sirene_denomination
+#: model:ir.model.fields,field_description:l10n_fr_sirene_sync.field_res_users__sirene_denomination
+msgid "Legal Name"
+msgstr "Dénomination"
+
+#. module: l10n_fr_sirene_sync
+#: model:ir.model.fields,field_description:l10n_fr_sirene_sync.field_res_partner__sirene_naf
+#: model:ir.model.fields,field_description:l10n_fr_sirene_sync.field_res_users__sirene_naf
+#: model:ir.model.fields,field_description:l10n_fr_sirene_sync.field_sirene_etablissement__naf
+msgid "NAF Code"
+msgstr "Code NAF"
+
+#. module: l10n_fr_sirene_sync
+#: model:ir.model.fields,field_description:l10n_fr_sirene_sync.field_sirene_etablissement__partner_id
+#: model:ir.model.fields,field_description:l10n_fr_sirene_sync.field_sirene_validation_wizard__partner_id
+msgid "Partner"
+msgstr "Partenaire"
+
+#. module: l10n_fr_sirene_sync
+#: model:ir.model.fields.selection,name:l10n_fr_sirene_sync.selection__res_partner__sirene_sync_state__pending
+msgid "Pending"
+msgstr "En attente"
+
+#. module: l10n_fr_sirene_sync
+#: model:ir.model.fields,field_description:l10n_fr_sirene_sync.field_sirene_etablissement__zip
+msgid "Postal Code"
+msgstr "Code postal"
+
+#. module: l10n_fr_sirene_sync
+#: model:ir.model.fields,field_description:l10n_fr_sirene_sync.field_sirene_validation_wizard_line__proposed_many2one_id
+msgid "Proposed Many2One"
+msgstr "Many2One proposé"
+
+#. module: l10n_fr_sirene_sync
+#: model:ir.model.fields,field_description:l10n_fr_sirene_sync.field_res_partner__siren
+#: model:ir.model.fields,field_description:l10n_fr_sirene_sync.field_res_partner__sirene_siren
+#: model:ir.model.fields,field_description:l10n_fr_sirene_sync.field_res_users__siren
+#: model:ir.model.fields,field_description:l10n_fr_sirene_sync.field_res_users__sirene_siren
+#: model_terms:ir.ui.view,arch_db:l10n_fr_sirene_sync.view_partner_form_sirene
+msgid "SIREN"
+msgstr "SIREN"
+
+#. module: l10n_fr_sirene_sync
+#. odoo-python
+#: code:addons/l10n_fr_sirene_sync/models/res_partner.py:0
+msgid "SIRENE"
+msgstr "SIRENE"
+
+#. module: l10n_fr_sirene_sync
+#: model_terms:ir.ui.view,arch_db:l10n_fr_sirene_sync.view_sirene_validation_wizard_form
+msgid "SIRENE Address Update"
+msgstr "Mise à jour adresse SIRENE"
+
+#. module: l10n_fr_sirene_sync
+#: model:ir.model,name:l10n_fr_sirene_sync.model_sirene_validation_wizard
+msgid "SIRENE Data Validation Wizard"
+msgstr "Assistant de validation des données SIRENE"
+
+#. module: l10n_fr_sirene_sync
+#: model:ir.model.fields,field_description:l10n_fr_sirene_sync.field_res_partner__sirene_eligible
+#: model:ir.model.fields,field_description:l10n_fr_sirene_sync.field_res_users__sirene_eligible
+msgid "SIRENE Eligible"
+msgstr "Éligible SIRENE"
+
+#. module: l10n_fr_sirene_sync
+#: model_terms:ir.ui.view,arch_db:l10n_fr_sirene_sync.view_partner_form_sirene
+msgid "SIRENE Error:"
+msgstr "Erreur SIRENE :"
+
+#. module: l10n_fr_sirene_sync
+#: model:ir.model,name:l10n_fr_sirene_sync.model_sirene_etablissement
+msgid "SIRENE Establishment"
+msgstr "Établissement SIRENE"
+
+#. module: l10n_fr_sirene_sync
+#: model:ir.model.fields,field_description:l10n_fr_sirene_sync.field_res_partner__sirene_etablissement_ids
+#: model:ir.model.fields,field_description:l10n_fr_sirene_sync.field_res_users__sirene_etablissement_ids
+msgid "SIRENE Establishments"
+msgstr "Établissements SIRENE"
+
+#. module: l10n_fr_sirene_sync
+#: model_terms:ir.ui.view,arch_db:l10n_fr_sirene_sync.view_partner_form_sirene
+msgid "SIRENE Status"
+msgstr "Statut SIRENE"
+
+#. module: l10n_fr_sirene_sync
+#: model:ir.model.fields,field_description:l10n_fr_sirene_sync.field_res_partner__sirene_sync_state
+#: model:ir.model.fields,field_description:l10n_fr_sirene_sync.field_res_users__sirene_sync_state
+msgid "SIRENE Sync Status"
+msgstr "État synchro SIRENE"
+
+#. module: l10n_fr_sirene_sync
+#. odoo-python
+#: code:addons/l10n_fr_sirene_sync/models/res_partner.py:0
+msgid "SIRENE Update — %s"
+msgstr "Mise à jour SIRENE — %s"
+
+#. module: l10n_fr_sirene_sync
+#: model:ir.model,name:l10n_fr_sirene_sync.model_sirene_validation_wizard_line
+msgid "SIRENE Validation Line"
+msgstr "Ligne de validation SIRENE"
+
+#. module: l10n_fr_sirene_sync
+#. odoo-python
+#: code:addons/l10n_fr_sirene_sync/wizard/sirene_validation_wizard.py:0
+msgid "SIRENE update: changes ignored by the user."
+msgstr "Mise à jour SIRENE : modifications ignorées par l'utilisateur."
+
+#. module: l10n_fr_sirene_sync
+#: model:ir.actions.server,name:l10n_fr_sirene_sync.ir_cron_sirene_sync_ir_actions_server
+msgid "SIRENE — Synchronisation quotidienne des partenaires"
+msgstr "SIRENE — Synchronisation quotidienne des partenaires"
+
+#. module: l10n_fr_sirene_sync
+#: model:ir.model.fields,field_description:l10n_fr_sirene_sync.field_res_partner__siret
+#: model:ir.model.fields,field_description:l10n_fr_sirene_sync.field_res_users__siret
+#: model:ir.model.fields,field_description:l10n_fr_sirene_sync.field_sirene_etablissement__siret
+msgid "SIRET"
+msgstr "SIRET"
+
+#. module: l10n_fr_sirene_sync
+#: model:ir.model.fields,field_description:l10n_fr_sirene_sync.field_res_partner__sirene_siret_siege
+#: model:ir.model.fields,field_description:l10n_fr_sirene_sync.field_res_users__sirene_siret_siege
+msgid "SIRET (Head Office)"
+msgstr "SIRET siège"
+
+#. module: l10n_fr_sirene_sync
+#: model:ir.model.fields,field_description:l10n_fr_sirene_sync.field_sirene_etablissement__etat
+msgid "Status"
+msgstr "État"
+
+#. module: l10n_fr_sirene_sync
+#: model:ir.model.fields,field_description:l10n_fr_sirene_sync.field_sirene_etablissement__street
+msgid "Street"
+msgstr "Adresse"
+
+#. module: l10n_fr_sirene_sync
+#: model:ir.model.fields,field_description:l10n_fr_sirene_sync.field_sirene_etablissement__street2
+msgid "Street 2"
+msgstr "Complément d'adresse"
+
+#. module: l10n_fr_sirene_sync
+#: model_terms:ir.ui.view,arch_db:l10n_fr_sirene_sync.view_partner_form_sirene
+msgid "Synchronisation Status"
+msgstr "Statut de synchronisation"
+
+#. module: l10n_fr_sirene_sync
+#. odoo-python
+#: code:addons/l10n_fr_sirene_sync/models/res_partner.py:0
+msgid ""
+"Unable to extract a valid SIREN from the VAT number.\n"
+"Expected format: FR + 2 characters + 9 digits (e.g. FR40303265045).\n"
+"VAT value: '%s'"
+msgstr ""
+"Impossible d'extraire un SIREN valide depuis le numéro de TVA.\n"
+"Format attendu : FR + 2 caractères + 9 chiffres (ex : FR40303265045).\n"
+"Valeur TVA : « %s »"
+
+#. module: l10n_fr_sirene_sync
+#: model:ir.model.fields.selection,name:l10n_fr_sirene_sync.selection__res_partner__sirene_sync_state__unchecked
+msgid "Unchecked"
+msgstr "Non vérifié"
+
+#. module: l10n_fr_sirene_sync
+#: model:ir.model.fields.selection,name:l10n_fr_sirene_sync.selection__res_partner__sirene_sync_state__ok
+msgid "Up to date"
+msgstr "À jour"
+
+#. module: l10n_fr_sirene_sync
+#: model_terms:ir.ui.view,arch_db:l10n_fr_sirene_sync.view_partner_form_sirene
+msgid "Update available from SIRENE —"
+msgstr "Mise à jour disponible via SIRENE —"
+
+#. module: l10n_fr_sirene_sync
+#: model:ir.model.fields,field_description:l10n_fr_sirene_sync.field_sirene_validation_wizard_line__wizard_id
+msgid "Wizard"
+msgstr "Assistant"
