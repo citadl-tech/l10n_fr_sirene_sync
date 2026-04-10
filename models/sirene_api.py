@@ -90,7 +90,7 @@ def fetch_sirene_data(siren, api_key, timeout=10):
         (periodes[0].get("denominationUniteLegale") or "").strip() if periodes else ""
     )
     sigle = (unite_legale.get("sigleUniteLegale") or "").strip()
-    if sigle:
+    if sigle and sigle != denomination:
         denomination = "%s - %s" % (sigle, denomination) if denomination else sigle
     nic_siege = (
         (periodes[0].get("nicSiegeUniteLegale") or "").strip() if periodes else ""
