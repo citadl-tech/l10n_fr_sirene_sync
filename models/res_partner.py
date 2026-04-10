@@ -31,33 +31,27 @@ class ResPartner(models.Model):
         tracking=True,
     )
     sirene_denomination = fields.Char(
-        string="Legal Name",
-        readonly=True,
+        string="SIRENE Legal Name",
         copy=False,
     )
     sirene_siren = fields.Char(
-        string="SIREN",
-        readonly=True,
+        string="SIREN (SIRENE)",
         copy=False,
     )
     sirene_naf = fields.Char(
         string="NAF Code",
-        readonly=True,
         copy=False,
     )
     sirene_naf_activity = fields.Char(
         string="Activity",
-        readonly=True,
         copy=False,
     )
     sirene_date_creation = fields.Date(
         string="Creation Date",
-        readonly=True,
         copy=False,
     )
     sirene_siret_siege = fields.Char(
         string="SIRET (Head Office)",
-        readonly=True,
         copy=False,
     )
     sirene_sync_state = fields.Selection(
@@ -70,17 +64,14 @@ class ResPartner(models.Model):
         ],
         string="SIRENE Sync Status",
         default="unchecked",
-        readonly=True,
         copy=False,
     )
     sirene_last_check_date = fields.Datetime(
         string="Last SIRENE Check",
-        readonly=True,
         copy=False,
     )
     sirene_last_error = fields.Char(
         string="Last SIRENE Error",
-        readonly=True,
         copy=False,
     )
     sirene_etablissement_ids = fields.One2many(
@@ -361,10 +352,14 @@ class ResPartner(models.Model):
 
     @api.model
     def _cron_sirene_sync(self):
-        """Daily cron — synchronises eligible partners with the INSEE SIRENE API.
+        """Cron — synchronises eligible partners with the INSEE SIRENE API.
 
-        Rate limit: 30 requests/minute (2 requests/partner → 15 partners/minute).
-        A 4-second delay is applied between each partner.
+        Runs every 10 minutes by default (processes the oldest-checked partners first).
+        INSEE rate limit: 30 requests/minute (2 requests/partner).
+        A 4-second delay is applied between partners to stay within that limit.
+        Default batch: 10 partners (~50s per run, well within Odoo's 120s cron limit).
+        Increase l10n_fr_sirene_sync.cron_batch_limit cautiously: each extra partner
+        adds ~4s to the cron execution time.
         """
         ICP = self.env["ir.config_parameter"].sudo()
         api_key = ICP.get_param("l10n_fr_sirene_sync.api_key", "")
@@ -382,7 +377,7 @@ class ResPartner(models.Model):
                 ICP.get_param("l10n_fr_sirene_sync.cron_batch_limit", "500")
             )
         except (ValueError, TypeError):
-            batch_limit = 500
+            batch_limit = 10
 
         partners = self.search(
             [

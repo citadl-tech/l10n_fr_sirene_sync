@@ -83,7 +83,7 @@
                         <field name="sirene_etablissement_ids" nolabel="1" readonly="1">
                             <list>
                                 <field name="siret"/>
-                                <field name="is_siege" widget="boolean_favorite" optional="show"/>
+                                <field name="is_siege" widget="boolean" readonly="1" optional="show"/>
                                 <field name="etat"
                                        decoration-success="etat == 'A'"
                                        decoration-danger="etat == 'F'"

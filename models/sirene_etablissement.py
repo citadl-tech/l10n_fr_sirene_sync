@@ -12,18 +12,17 @@ class SireneEtablissement(models.Model):
         ondelete="cascade",
         index=True,
     )
-    siret = fields.Char(string="SIRET", readonly=True)
-    is_siege = fields.Boolean(string="Head Office", readonly=True)
+    siret = fields.Char(string="SIRET")
+    is_siege = fields.Boolean(string="Head Office")
     etat = fields.Selection(
         selection=[("A", "Active"), ("F", "Closed")],
         string="Status",
-        readonly=True,
     )
-    naf = fields.Char(string="NAF Code", readonly=True)
-    naf_activity = fields.Char(string="Activity", readonly=True)
-    street = fields.Char(string="Street", readonly=True)
-    street2 = fields.Char(string="Street 2", readonly=True)
-    zip = fields.Char(string="Postal Code", readonly=True)
-    city = fields.Char(string="City", readonly=True)
-    date_creation = fields.Date(string="Creation Date", readonly=True)
-    date_fermeture = fields.Date(string="Closure Date", readonly=True)
+    naf = fields.Char(string="NAF Code")
+    naf_activity = fields.Char(string="Activity")
+    street = fields.Char(string="Street")
+    street2 = fields.Char(string="Street 2")
+    zip = fields.Char(string="Postal Code")
+    city = fields.Char(string="City")
+    date_creation = fields.Date(string="Creation Date")
+    date_fermeture = fields.Date(string="Closure Date")

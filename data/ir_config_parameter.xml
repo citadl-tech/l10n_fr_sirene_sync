@@ -13,7 +13,7 @@
 
     <record id="param_sirene_cron_batch_limit" model="ir.config_parameter">
         <field name="key">l10n_fr_sirene_sync.cron_batch_limit</field>
-        <field name="value">500</field>
+        <field name="value">10</field>
     </record>
 
 </odoo>

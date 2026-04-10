@@ -244,8 +244,8 @@ msgstr "Informations juridiques"
 #. module: l10n_fr_sirene_sync
 #: model:ir.model.fields,field_description:l10n_fr_sirene_sync.field_res_partner__sirene_denomination
 #: model:ir.model.fields,field_description:l10n_fr_sirene_sync.field_res_users__sirene_denomination
-msgid "Legal Name"
-msgstr "Dénomination"
+msgid "SIRENE Legal Name"
+msgstr "Dénomination (SIRENE)"
 
 #. module: l10n_fr_sirene_sync
 #: model:ir.model.fields,field_description:l10n_fr_sirene_sync.field_res_partner__sirene_naf
