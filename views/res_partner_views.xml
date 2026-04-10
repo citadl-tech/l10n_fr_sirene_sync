@@ -63,6 +63,7 @@
                             <field name="sirene_siret_siege" readonly="1"/>
                             <field name="sirene_naf_activity" readonly="1"/>
                             <field name="sirene_naf" readonly="1"/>
+                            <field name="sirene_industry_id" readonly="1"/>
                             <field name="sirene_date_creation" readonly="1"/>
                         </group>
                         <group string="Synchronisation Status">

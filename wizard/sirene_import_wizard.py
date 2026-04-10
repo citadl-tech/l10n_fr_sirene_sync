@@ -137,6 +137,7 @@ class SireneImportWizard(models.TransientModel):
         france = self.env.ref("base.fr")
         vat = self._siren_to_vat(self.preview_siren) if self.preview_siren else False
         denomination = self.preview_name or ""
+        industry = self.env["res.partner"]._get_industry_from_naf(self.preview_naf)
         partner_vals = {
             "name": denomination,
             "is_company": True,
@@ -147,11 +148,13 @@ class SireneImportWizard(models.TransientModel):
             "zip": self.preview_zip,
             "city": self.preview_city,
             "country_id": france.id,
+            "industry_id": industry.id if industry else False,
             "sirene_siren": self.preview_siren,
             "sirene_siret_siege": self.preview_siret,
             "sirene_naf": self.preview_naf,
             "sirene_naf_activity": self.preview_naf_activity,
             "sirene_date_creation": self.preview_date_creation,
+            "sirene_industry_id": industry.id if industry else False,
             "sirene_denomination": denomination,
             "sirene_sync_state": "ok",
             "sirene_last_check_date": fields.Datetime.now(),

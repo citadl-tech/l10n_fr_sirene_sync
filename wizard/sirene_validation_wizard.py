@@ -2,7 +2,7 @@ from odoo import models, fields, api, _
 
 # Explicit whitelist of partner fields that this wizard is allowed to update.
 _ALLOWED_WRITE_FIELDS = frozenset(
-    {"name", "siren", "siret", "street", "street2", "zip", "city", "country_id"}
+    {"name", "siren", "siret", "street", "street2", "zip", "city", "country_id", "industry_id"}
 )
 
 _CHAR_FIELD_MAPPING = [
@@ -100,6 +100,21 @@ class SireneValidationWizard(models.TransientModel):
                         "current_value": partner.country_id.name or "",
                         "proposed_value": france.name,
                         "proposed_many2one_id": france.id,
+                        "apply": True,
+                    }
+                )
+
+            # Industry: derived from sirene_industry_id staging field
+            industry = partner.sirene_industry_id
+            if industry and partner.industry_id != industry:
+                lines.append(
+                    {
+                        "wizard_id": wizard.id,
+                        "field_name": "industry_id",
+                        "field_label": "Industry",
+                        "current_value": partner.industry_id.name or "",
+                        "proposed_value": industry.name,
+                        "proposed_many2one_id": industry.id,
                         "apply": True,
                     }
                 )

@@ -31,7 +31,7 @@ class ResPartner(models.Model):
         tracking=True,
     )
     sirene_denomination = fields.Char(
-        string="SIRENE Legal Name",
+        string="Legal Name",
         copy=False,
     )
     sirene_siren = fields.Char(
@@ -48,6 +48,11 @@ class ResPartner(models.Model):
     )
     sirene_date_creation = fields.Date(
         string="Creation Date",
+        copy=False,
+    )
+    sirene_industry_id = fields.Many2one(
+        "res.partner.industry",
+        string="Industry",
         copy=False,
     )
     sirene_siret_siege = fields.Char(
@@ -104,6 +109,53 @@ class ResPartner(models.Model):
         siren = vat[4:]  # skip 'FR' (2) + key (2), take remaining 9 chars
         return siren if siren.isdigit() else ""
 
+    @staticmethod
+    def _naf_division_to_section(naf):
+        """Map a NAF code to its NACE section letter from the division number.
+
+        NAF codes are structured as DD.XXY (e.g. '63.11Z', '71.11Z').
+        The first two digits identify the division, which maps to a section.
+        """
+        try:
+            division = int((naf or "")[:2])
+        except ValueError:
+            return ""
+        if division <= 3:   return "A"
+        if division <= 9:   return "B"
+        if division <= 33:  return "C"
+        if division == 35:  return "D"
+        if division <= 39:  return "E"
+        if division <= 43:  return "F"
+        if division <= 47:  return "G"
+        if division <= 53:  return "H"
+        if division <= 56:  return "I"
+        if division <= 63:  return "J"
+        if division <= 66:  return "K"
+        if division == 68:  return "L"
+        if division <= 75:  return "M"
+        if division <= 82:  return "N"
+        if division == 84:  return "O"
+        if division == 85:  return "P"
+        if division <= 88:  return "Q"
+        if division <= 93:  return "R"
+        if division <= 96:  return "S"
+        if division <= 98:  return "T"
+        if division == 99:  return "U"
+        return ""
+
+    def _get_industry_from_naf(self, naf):
+        """Return the res.partner.industry matching the NAF code's NACE section.
+
+        Industries are matched by full_name starting with '<letter> -'.
+        Returns an empty recordset if no match is found.
+        """
+        section = self._naf_division_to_section(naf)
+        if not section:
+            return self.env["res.partner.industry"]
+        return self.env["res.partner.industry"].search(
+            [("full_name", "like", section + " -")], limit=1
+        )
+
     def _get_sirene_config(self):
         ICP = self.env["ir.config_parameter"].sudo()
         try:
@@ -116,14 +168,17 @@ class ResPartner(models.Model):
         }
 
     def _build_staging_vals(self, result):
+        naf = result.get("naf", "") or ""
+        industry = self._get_industry_from_naf(naf)
         staging_vals = {
             "sirene_last_check_date": fields.Datetime.now(),
             "sirene_last_error": False,
             "sirene_denomination": result.get("denomination", "") or "",
-            "sirene_naf": result.get("naf", "") or "",
+            "sirene_naf": naf,
             "sirene_naf_activity": result.get("naf_activity", "") or "",
             "sirene_date_creation": result.get("date_creation"),
             "sirene_siret_siege": result.get("siret_siege", "") or "",
+            "sirene_industry_id": industry.id if industry else False,
         }
         for _odoo_field, sirene_field, _label in FIELD_MAPPING:
             sirene_val = result.get(_odoo_field, "") or ""
@@ -181,6 +236,16 @@ class ResPartner(models.Model):
                 "Country: '%s' → 'France'" % (self.country_id.name or "")
                 if verbose
                 else "Country"
+            )
+
+        industry = self.env["res.partner.industry"].browse(
+            staging_vals.get("sirene_industry_id") or 0
+        )
+        if industry and self.industry_id != industry:
+            diffs.append(
+                "Industry: '%s' → '%s'" % (self.industry_id.name or "", industry.name)
+                if verbose
+                else "Industry"
             )
 
         return diffs
