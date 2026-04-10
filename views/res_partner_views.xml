@@ -61,6 +61,10 @@
                             <field name="sirene_denomination" readonly="1"/>
                             <field name="sirene_siren" readonly="1"/>
                             <field name="sirene_siret_siege" readonly="1"/>
+                            <field name="sirene_legal_form" readonly="1"/>
+                            <field name="sirene_legal_form_code" readonly="1"/>
+                            <field name="sirene_workforce" readonly="1"/>
+                            <field name="sirene_categorie_entreprise" readonly="1"/>
                             <field name="sirene_naf_activity" readonly="1"/>
                             <field name="sirene_naf" readonly="1"/>
                             <field name="sirene_industry_id" readonly="1"/>

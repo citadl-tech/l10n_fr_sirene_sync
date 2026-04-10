@@ -50,9 +50,26 @@ class ResPartner(models.Model):
         string="Creation Date",
         copy=False,
     )
+    sirene_legal_form_code = fields.Char(
+        string="Legal Form Code",
+        size=4,
+        copy=False,
+    )
+    sirene_legal_form = fields.Char(
+        string="Legal Form",
+        copy=False,
+    )
+    sirene_workforce = fields.Char(
+        string="Workforce",
+        copy=False,
+    )
+    sirene_categorie_entreprise = fields.Char(
+        string="Company Category",
+        copy=False,
+    )
     sirene_industry_id = fields.Many2one(
         "res.partner.industry",
-        string="Industry",
+        string="Industry (SIRENE)",
         copy=False,
     )
     sirene_siret_siege = fields.Char(
@@ -179,6 +196,10 @@ class ResPartner(models.Model):
             "sirene_date_creation": result.get("date_creation"),
             "sirene_siret_siege": result.get("siret_siege", "") or "",
             "sirene_industry_id": industry.id if industry else False,
+            "sirene_legal_form_code": result.get("legal_form_code", "") or "",
+            "sirene_legal_form": result.get("legal_form", "") or "",
+            "sirene_workforce": result.get("workforce", "") or "",
+            "sirene_categorie_entreprise": result.get("categorie_entreprise", "") or "",
         }
         for _odoo_field, sirene_field, _label in FIELD_MAPPING:
             sirene_val = result.get(_odoo_field, "") or ""

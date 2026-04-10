@@ -3,6 +3,26 @@ import logging
 import datetime
 import requests
 from .naf_codes import format_naf, get_naf_label
+from .legal_form_codes import get_legal_form_label
+
+_WORKFORCE_LABELS = {
+    "NN": "Non employeur",
+    "00": "0 salarié",
+    "01": "1 ou 2 salariés",
+    "02": "3 à 5 salariés",
+    "03": "6 à 9 salariés",
+    "11": "10 à 19 salariés",
+    "12": "20 à 49 salariés",
+    "21": "50 à 99 salariés",
+    "22": "100 à 199 salariés",
+    "31": "200 à 249 salariés",
+    "32": "250 à 499 salariés",
+    "41": "500 à 999 salariés",
+    "42": "1 000 à 1 999 salariés",
+    "51": "2 000 à 4 999 salariés",
+    "52": "5 000 à 9 999 salariés",
+    "53": "10 000 salariés et plus",
+}
 
 _logger = logging.getLogger(__name__)
 
@@ -104,6 +124,14 @@ def fetch_sirene_data(siren, api_key, timeout=10):
     naf = format_naf(raw_naf)
     naf_activity = get_naf_label(raw_naf)
     date_creation = _parse_date(unite_legale.get("dateCreationUniteLegale"))
+    raw_legal_form = (
+        (periodes[0].get("categorieJuridiqueUniteLegale") or "").strip() if periodes else ""
+    )
+    workforce_code = (unite_legale.get("trancheEffectifsUniteLegale") or "").strip()
+    workforce_year = (unite_legale.get("anneeEffectifsUniteLegale") or "").strip()
+    workforce_label = _WORKFORCE_LABELS.get(workforce_code, "")
+    workforce = "%s (%s)" % (workforce_label, workforce_year) if workforce_label and workforce_year else workforce_label
+    categorie_entreprise = (unite_legale.get("categorieEntreprise") or "").strip()
 
     if not siret_siege:
         raise SireneAPIError(f"Unable to determine head office SIRET for SIREN {siren}")
@@ -115,6 +143,10 @@ def fetch_sirene_data(siren, api_key, timeout=10):
         "naf": naf,
         "naf_activity": naf_activity,
         "date_creation": date_creation,
+        "legal_form_code": raw_legal_form,
+        "legal_form": get_legal_form_label(raw_legal_form),
+        "workforce": workforce,
+        "categorie_entreprise": categorie_entreprise,
     }
 
 
