@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Wizard action -->
+    <record id="action_sirene_import_wizard" model="ir.actions.act_window">
+        <field name="name">Import from SIRENE</field>
+        <field name="res_model">sirene.import.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <!-- Menu entry under Contacts -->
+    <menuitem id="menu_sirene_import"
+              name="Import from SIRENE"
+              parent="contacts.menu_contacts"
+              action="action_sirene_import_wizard"
+              sequence="20"/>
+
+    <!-- Wizard form -->
+    <record id="view_sirene_import_wizard_form" model="ir.ui.view">
+        <field name="name">sirene.import.wizard.form</field>
+        <field name="model">sirene.import.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Import from SIRENE">
+                <sheet>
+
+                    <!-- Step 1: Search -->
+                    <group invisible="state != 'search'">
+                        <div class="alert alert-info" role="alert">
+                            <i class="fa fa-search me-1"/>
+                            Enter a <b>SIREN</b> (9 digits), a <b>SIRET</b> (14 digits),
+                            or a <b>French VAT number</b> (e.g. FR12345678901).
+                        </div>
+                        <group>
+                            <field name="search_input"
+                                   string="SIREN / SIRET / VAT"
+                                   placeholder="e.g. 123456789 or FR12345678901"/>
+                        </group>
+                    </group>
+
+                    <!-- Step 2: Preview -->
+                    <group invisible="state != 'preview'">
+
+                        <!-- Warning: partner already exists -->
+                        <div class="alert alert-warning d-flex align-items-center"
+                             role="alert"
+                             invisible="not existing_partner_id">
+                            <i class="fa fa-exclamation-triangle me-2"/>
+                            <span>
+                                A partner with this SIREN already exists:
+                                <field name="existing_partner_id"
+                                       readonly="1"
+                                       nolabel="1"
+                                       class="fw-bold"/>
+                            </span>
+                        </div>
+
+                        <group string="Legal Information">
+                            <field name="preview_name"/>
+                            <field name="preview_siren"/>
+                            <field name="preview_siret"/>
+                            <field name="preview_naf"/>
+                            <field name="preview_naf_activity"/>
+                        </group>
+                        <group string="Head Office Address">
+                            <field name="preview_street"/>
+                            <field name="preview_zip"/>
+                            <field name="preview_city"/>
+                        </group>
+                    </group>
+
+                    <field name="state" invisible="1"/>
+
+                </sheet>
+                <footer>
+                    <!-- Step 1 footer -->
+                    <button name="action_search"
+                            string="Search SIRENE"
+                            type="object"
+                            class="btn-primary"
+                            invisible="state != 'search'"/>
+
+                    <!-- Step 2 footer: no existing partner -->
+                    <button name="action_import"
+                            string="Create Partner"
+                            type="object"
+                            class="btn-primary"
+                            invisible="state != 'preview' or existing_partner_id"/>
+
+                    <!-- Step 2 footer: existing partner -->
+                    <button name="action_import"
+                            string="Create Anyway"
+                            type="object"
+                            class="btn-secondary"
+                            invisible="state != 'preview' or not existing_partner_id"/>
+                    <button name="action_go_to_existing"
+                            string="Go to Existing Partner"
+                            type="object"
+                            class="btn-primary"
+                            invisible="state != 'preview' or not existing_partner_id"/>
+
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+</odoo>

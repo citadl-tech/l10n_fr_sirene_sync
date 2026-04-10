@@ -96,7 +96,7 @@ class ResPartner(models.Model):
         """Extract the 9-digit SIREN from a French VAT number.
 
         French VAT format: FR + 2-char key (digits or letters) + 9-digit SIREN.
-        Example: FR40303265045 → SIREN = 303265045
+        Example: FR12345678901 → SIREN = 303265045
         """
         vat = (self.vat or "").replace(" ", "").upper()
         if not vat.startswith("FR") or len(vat) != 13:
@@ -198,7 +198,7 @@ class ResPartner(models.Model):
             raise UserError(
                 _(
                     "Unable to extract a valid SIREN from the VAT number.\n"
-                    "Expected format: FR + 2 characters + 9 digits (e.g. FR40303265045).\n"
+                    "Expected format: FR + 2 characters + 9 digits (e.g. FR12345678901).\n"
                     "VAT value: '%s'"
                 )
                 % (self.vat or "")

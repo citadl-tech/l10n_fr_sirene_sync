@@ -393,11 +393,11 @@ msgstr "Statut de synchronisation"
 #: code:addons/l10n_fr_sirene_sync/models/res_partner.py:0
 msgid ""
 "Unable to extract a valid SIREN from the VAT number.\n"
-"Expected format: FR + 2 characters + 9 digits (e.g. FR40303265045).\n"
+"Expected format: FR + 2 characters + 9 digits (e.g. FR12345678901).\n"
 "VAT value: '%s'"
 msgstr ""
 "Impossible d'extraire un SIREN valide depuis le numéro de TVA.\n"
-"Format attendu : FR + 2 caractères + 9 chiffres (ex : FR40303265045).\n"
+"Format attendu : FR + 2 caractères + 9 chiffres (ex : FR12345678901).\n"
 "Valeur TVA : « %s »"
 
 #. module: l10n_fr_sirene_sync

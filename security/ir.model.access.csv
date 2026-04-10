@@ -2,3 +2,4 @@ id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_sirene_validation_wizard,sirene.validation.wizard user,model_sirene_validation_wizard,base.group_user,1,1,1,1
 access_sirene_validation_wizard_line,sirene.validation.wizard.line user,model_sirene_validation_wizard_line,base.group_user,1,1,1,1
 access_sirene_etablissement,sirene.etablissement user,model_sirene_etablissement,base.group_user,1,0,0,0
+access_sirene_import_wizard,sirene.import.wizard user,model_sirene_import_wizard,base.group_user,1,1,1,1
