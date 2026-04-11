@@ -1,6 +1,7 @@
 import re
 import time
 import logging
+from datetime import timedelta
 from odoo import models, fields, api, _
 from odoo.exceptions import UserError
 from .sirene_api import fetch_sirene_data, fetch_sirene_etablissements, SireneAPIError
@@ -67,6 +68,24 @@ class ResPartner(models.Model):
         string="Company Category",
         copy=False,
     )
+    sirene_etat_administratif = fields.Selection(
+        selection=[("A", "Active"), ("C", "Ceased")],
+        string="Administrative Status",
+        copy=False,
+    )
+    sirene_date_cessation = fields.Date(
+        string="Cessation Date",
+        copy=False,
+    )
+    sirene_en_liquidation = fields.Boolean(
+        compute="_compute_sirene_en_liquidation",
+        string="In Liquidation",
+    )
+
+    @api.depends("sirene_denomination")
+    def _compute_sirene_en_liquidation(self):
+        for rec in self:
+            rec.sirene_en_liquidation = "LIQUIDATION" in (rec.sirene_denomination or "").upper()
     sirene_industry_id = fields.Many2one(
         "res.partner.industry",
         string="Industry (SIRENE)",
@@ -106,6 +125,37 @@ class ResPartner(models.Model):
         compute="_compute_sirene_eligible",
         string="SIRENE Eligible",
     )
+    sirene_last_check_relative = fields.Char(
+        compute="_compute_sirene_last_check_relative",
+        string="Last SIRENE Check",
+    )
+
+    @api.depends("sirene_last_check_date")
+    def _compute_sirene_last_check_relative(self):
+        now = fields.Datetime.now()
+        for rec in self:
+            dt = rec.sirene_last_check_date
+            if not dt:
+                rec.sirene_last_check_relative = ""
+                continue
+            diff = now - dt
+            total_seconds = int(diff.total_seconds())
+            if total_seconds < 60:
+                rec.sirene_last_check_relative = "just now"
+            elif total_seconds < 3600:
+                m = total_seconds // 60
+                rec.sirene_last_check_relative = "%d minute%s ago" % (m, "s" if m > 1 else "")
+            elif total_seconds < 86400:
+                h = total_seconds // 3600
+                rec.sirene_last_check_relative = "%d hour%s ago" % (h, "s" if h > 1 else "")
+            elif diff.days < 30:
+                rec.sirene_last_check_relative = "%d day%s ago" % (diff.days, "s" if diff.days > 1 else "")
+            elif diff.days < 365:
+                m = diff.days // 30
+                rec.sirene_last_check_relative = "%d month%s ago" % (m, "s" if m > 1 else "")
+            else:
+                y = diff.days // 365
+                rec.sirene_last_check_relative = "%d year%s ago" % (y, "s" if y > 1 else "")
 
     @api.depends("is_company", "vat")
     def _compute_sirene_eligible(self):
@@ -200,6 +250,8 @@ class ResPartner(models.Model):
             "sirene_legal_form": result.get("legal_form", "") or "",
             "sirene_workforce": result.get("workforce", "") or "",
             "sirene_categorie_entreprise": result.get("categorie_entreprise", "") or "",
+            "sirene_etat_administratif": result.get("etat_administratif"),
+            "sirene_date_cessation": result.get("date_cessation"),
         }
         for _odoo_field, sirene_field, _label in FIELD_MAPPING:
             sirene_val = result.get(_odoo_field, "") or ""
@@ -224,7 +276,7 @@ class ResPartner(models.Model):
                 )
 
         denomination = staging_vals["sirene_denomination"]
-        if denomination.strip() != (self.name or "").strip():
+        if denomination.strip() and denomination.strip() != (self.name or "").strip():
             diffs.append(
                 "Legal Name: '%s' → '%s'" % (self.name or "", denomination)
                 if verbose
@@ -465,6 +517,7 @@ class ResPartner(models.Model):
         except (ValueError, TypeError):
             batch_limit = 10
 
+        cutoff = fields.Datetime.now() - timedelta(hours=24)
         partners = self.search(
             [
                 ("is_company", "=", True),
@@ -473,6 +526,9 @@ class ResPartner(models.Model):
                     "=ilike",
                     "FR___________",
                 ),  # 13 chars: FR + 2 (key) + 9 (SIREN)
+                "|",
+                ("sirene_last_check_date", "=", False),
+                ("sirene_last_check_date", "<", cutoff),
             ],
             order="sirene_last_check_date asc nulls first",
             limit=batch_limit,

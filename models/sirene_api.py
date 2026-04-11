@@ -132,6 +132,12 @@ def fetch_sirene_data(siren, api_key, timeout=10):
     workforce_label = _WORKFORCE_LABELS.get(workforce_code, "")
     workforce = "%s (%s)" % (workforce_label, workforce_year) if workforce_label and workforce_year else workforce_label
     categorie_entreprise = (unite_legale.get("categorieEntreprise") or "").strip()
+    etat_administratif = (
+        (periodes[0].get("etatAdministratifUniteLegale") or "").strip() if periodes else ""
+    )
+    date_cessation = _parse_date(
+        periodes[0].get("dateDebut") if periodes and etat_administratif == "C" else None
+    )
 
     if not siret_siege:
         raise SireneAPIError(f"Unable to determine head office SIRET for SIREN {siren}")
@@ -147,6 +153,8 @@ def fetch_sirene_data(siren, api_key, timeout=10):
         "legal_form": get_legal_form_label(raw_legal_form),
         "workforce": workforce,
         "categorie_entreprise": categorie_entreprise,
+        "etat_administratif": etat_administratif if etat_administratif in ("A", "C") else "A",
+        "date_cessation": date_cessation,
     }
 
 

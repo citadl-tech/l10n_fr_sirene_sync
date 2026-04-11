@@ -37,7 +37,7 @@ class SireneValidationWizard(models.TransientModel):
 
             # Legal name vs Odoo partner name
             denomination = partner.sirene_denomination or ""
-            if denomination.strip() != (partner.name or "").strip():
+            if denomination.strip() and denomination.strip() != (partner.name or "").strip():
                 lines.append(
                     {
                         "wizard_id": wizard.id,
