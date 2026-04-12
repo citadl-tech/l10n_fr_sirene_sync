@@ -2,7 +2,7 @@
 
 ![Odoo 18.0](https://img.shields.io/badge/Odoo-18.0-875A7B?style=flat&logo=odoo) ![License: LGPL-3](https://img.shields.io/badge/License-LGPL--3-blue.svg)
 
-Odoo 18 Community module — synchronises partner data with the French INSEE SIRENE official business registry via its public API.
+Odoo 18 module — synchronises partner data with the French INSEE SIRENE official business registry via its public API. Compatible with both **Community** and **Enterprise** editions.
 
 ## Features
 
