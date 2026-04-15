@@ -108,7 +108,7 @@ class ResPartner(models.Model):
         copy=False,
     )
     sirene_last_check_date = fields.Datetime(
-        string="Last SIRENE Check",
+        string="SIRENE Last Check",
         copy=False,
     )
     sirene_last_error = fields.Char(
@@ -127,7 +127,7 @@ class ResPartner(models.Model):
     )
     sirene_last_check_relative = fields.Char(
         compute="_compute_sirene_last_check_relative",
-        string="Last SIRENE Check",
+        string="Last Check",
     )
 
     @api.depends("sirene_last_check_date")
