@@ -20,7 +20,6 @@
                     </div>
                     <field name="line_ids" nolabel="1">
                         <list editable="bottom" create="false" delete="false">
-                            <field name="field_name" column_invisible="1"/>
                             <field name="field_label" string="Field" readonly="1"/>
                             <field name="current_value" string="Current Value (Odoo)" readonly="1"/>
                             <field name="proposed_value" string="INSEE SIRENE Value" readonly="1"/>
