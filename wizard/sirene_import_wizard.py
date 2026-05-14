@@ -40,6 +40,11 @@ class SireneImportWizard(models.TransientModel):
         string="Existing Partner",
         readonly=True,
     )
+    archived_partner_id = fields.Many2one(
+        "res.partner",
+        string="Archived Partner",
+        readonly=True,
+    )
 
     def _extract_siren(self, raw):
         """Normalise SIREN / SIRET / French VAT to a 9-digit SIREN string.
@@ -96,6 +101,10 @@ class SireneImportWizard(models.TransientModel):
         existing = self.env["res.partner"].search(
             [("siren", "=", siren), ("is_company", "=", True)], limit=1
         )
+        archived = self.env["res.partner"].with_context(active_test=False).search(
+            [("siren", "=", siren), ("is_company", "=", True), ("active", "=", False)],
+            limit=1,
+        )
 
         self.write(
             {
@@ -110,6 +119,7 @@ class SireneImportWizard(models.TransientModel):
                 "preview_zip": zip_code,
                 "preview_city": city,
                 "existing_partner_id": existing.id if existing else False,
+                "archived_partner_id": archived.id if archived else False,
             }
         )
 
@@ -130,6 +140,15 @@ class SireneImportWizard(models.TransientModel):
         """
         key = (12 + 3 * (int(siren) % 97)) % 97
         return "FR%02d%s" % (key, siren)
+
+    def _open_partner_action(self, partner):
+        return {
+            "type": "ir.actions.act_window",
+            "res_model": "res.partner",
+            "res_id": partner.id,
+            "view_mode": "form",
+            "target": "current",
+        }
 
     def action_import(self):
         self.ensure_one()
@@ -179,20 +198,19 @@ class SireneImportWizard(models.TransientModel):
             partner.id,
         )
 
-        return {
-            "type": "ir.actions.act_window",
-            "res_model": "res.partner",
-            "res_id": partner.id,
-            "view_mode": "form",
-            "target": "current",
-        }
+        return self._open_partner_action(partner)
 
     def action_go_to_existing(self):
         self.ensure_one()
-        return {
-            "type": "ir.actions.act_window",
-            "res_model": "res.partner",
-            "res_id": self.existing_partner_id.id,
-            "view_mode": "form",
-            "target": "current",
-        }
+        return self._open_partner_action(self.existing_partner_id)
+
+    def action_unarchive(self):
+        self.ensure_one()
+        self.archived_partner_id.action_unarchive()
+        _logger.info(
+            "SIRENE import: archived partner '%s' (SIREN %s) unarchived — id=%s",
+            self.archived_partner_id.name,
+            self.preview_siren,
+            self.archived_partner_id.id,
+        )
+        return self._open_partner_action(self.archived_partner_id)

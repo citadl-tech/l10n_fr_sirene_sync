@@ -20,7 +20,7 @@ Features
 - Orange banner when the legal name contains "LIQUIDATION".
 - Background cron job for automatic batch synchronisation (max once every 24 hours per partner).
 - Full list of establishments stored per partner (siret, state, NAF, address, dates).
-- **Import wizard**: create a new partner directly from a SIREN, SIRET or French VAT number — previews SIRENE data before import.
+- **Import wizard**: create a new partner directly from a SIREN, SIRET or French VAT number — previews SIRENE data before import. Detects duplicate partners (active **and archived**) and proposes to navigate to the existing one, unarchive it, or create anyway.
 - **NAF → Industry mapping**: automatically maps the NAF code to the matching Odoo industry via NACE section.
 - **Legal form**: fetches ``categorieJuridiqueUniteLegale`` and resolves it to a French label (~150 codes covered).
 - **Workforce**: fetches ``trancheEffectifsUniteLegale`` and resolves it to a workforce range label, with reference year.
@@ -61,7 +61,12 @@ Import from SIRENE
 
 1. Go to **Contacts → Import from SIRENE**.
 2. Enter a SIREN (9 digits), SIRET (14 digits) or French VAT number.
-3. Review the preview and click **Import** to create the partner, or **Go to existing** if one already exists.
+3. Review the preview. Depending on whether a partner with that SIREN already exists:
+
+   - **No duplicate**: click **Create Partner**.
+   - **Active duplicate found**: click **Go to Existing Partner** or **Create Anyway**.
+   - **Archived duplicate found**: click **Unarchive Partner** (restores and opens the archived record) or **Create Anyway**.
+   - **Both active and archived duplicates**: all three action buttons are available simultaneously.
 
 Automatic synchronisation
 ~~~~~~~~~~~~~~~~~~~~~~~~~

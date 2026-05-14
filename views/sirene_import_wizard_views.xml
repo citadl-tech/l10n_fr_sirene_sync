@@ -39,9 +39,9 @@
                     </group>
 
                     <!-- Step 2: Preview -->
-                    <group invisible="state != 'preview'">
+                    <div invisible="state != 'preview'">
 
-                        <!-- Warning: partner already exists -->
+                        <!-- Warning: active partner already exists -->
                         <div class="alert alert-warning d-flex align-items-center"
                              role="alert"
                              invisible="not existing_partner_id">
@@ -49,6 +49,20 @@
                             <span>
                                 A partner with this SIREN already exists:
                                 <field name="existing_partner_id"
+                                       readonly="1"
+                                       nolabel="1"
+                                       class="fw-bold"/>
+                            </span>
+                        </div>
+
+                        <!-- Warning: archived partner found -->
+                        <div class="alert alert-warning d-flex align-items-center"
+                             role="alert"
+                             invisible="not archived_partner_id">
+                            <i class="fa fa-archive me-2"/>
+                            <span>
+                                An archived partner with this SIREN exists:
+                                <field name="archived_partner_id"
                                        readonly="1"
                                        nolabel="1"
                                        class="fw-bold"/>
@@ -67,7 +81,7 @@
                             <field name="preview_zip"/>
                             <field name="preview_city"/>
                         </group>
-                    </group>
+                    </div>
 
                 </sheet>
                 <footer>
@@ -78,24 +92,34 @@
                             class="btn-primary"
                             invisible="state != 'search'"/>
 
-                    <!-- Step 2 footer: no existing partner -->
+                    <!-- Step 2 footer: no duplicate at all -->
                     <button name="action_import"
                             string="Create Partner"
                             type="object"
                             class="btn-primary"
-                            invisible="state != 'preview' or existing_partner_id"/>
+                            invisible="state != 'preview' or existing_partner_id or archived_partner_id"/>
 
-                    <!-- Step 2 footer: existing partner -->
+                    <!-- Step 2 footer: duplicate exists (active or archived) -->
                     <button name="action_import"
                             string="Create Anyway"
                             type="object"
                             class="btn-secondary"
-                            invisible="state != 'preview' or not existing_partner_id"/>
+                            invisible="state != 'preview' or (not existing_partner_id and not archived_partner_id)"/>
                     <button name="action_go_to_existing"
                             string="Go to Existing Partner"
                             type="object"
                             class="btn-primary"
                             invisible="state != 'preview' or not existing_partner_id"/>
+                    <button name="action_unarchive"
+                            string="Unarchive Partner"
+                            type="object"
+                            class="btn-primary"
+                            invisible="state != 'preview' or not archived_partner_id or existing_partner_id"/>
+                    <button name="action_unarchive"
+                            string="Unarchive Partner"
+                            type="object"
+                            class="btn-secondary"
+                            invisible="state != 'preview' or not archived_partner_id or not existing_partner_id"/>
 
                     <button string="Cancel" class="btn-secondary" special="cancel"/>
                 </footer>
