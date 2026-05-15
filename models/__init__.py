@@ -1,3 +1,1 @@
-from . import sirene_etablissement
-from . import res_partner
-from . import sirene_api
+from . import res_partner, sirene_api, sirene_etablissement

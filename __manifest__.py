@@ -4,8 +4,8 @@
 {
     "name": "SIRENE Synchronisation (INSEE)",
     "summary": "Verify and update partner data via the INSEE SIRENE API",
-    "version": "18.0.1.1.3",
-    "development_status": "Beta",
+    "version": "18.0.1.2.0",
+    "development_status": "Production/Stable",
     "category": "Localization/France",
     "website": "https://www.citadl.fr/",
     "author": "CITADL",

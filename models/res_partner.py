@@ -1,10 +1,12 @@
+import logging
 import re
 import time
-import logging
 from datetime import timedelta
-from odoo import models, fields, api, _
+
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError
-from .sirene_api import fetch_sirene_data, fetch_sirene_etablissements, SireneAPIError
+
+from .sirene_api import SireneAPIError, fetch_sirene_data, fetch_sirene_etablissements
 
 _logger = logging.getLogger(__name__)
 
@@ -86,6 +88,7 @@ class ResPartner(models.Model):
     def _compute_sirene_en_liquidation(self):
         for rec in self:
             rec.sirene_en_liquidation = "LIQUIDATION" in (rec.sirene_denomination or "").upper()
+
     sirene_industry_id = fields.Many2one(
         "res.partner.industry",
         string="Industry (SIRENE)",
@@ -144,25 +147,23 @@ class ResPartner(models.Model):
                 rec.sirene_last_check_relative = "just now"
             elif total_seconds < 3600:
                 m = total_seconds // 60
-                rec.sirene_last_check_relative = "%d minute%s ago" % (m, "s" if m > 1 else "")
+                rec.sirene_last_check_relative = f"{m} minute{'s' if m > 1 else ''} ago"
             elif total_seconds < 86400:
                 h = total_seconds // 3600
-                rec.sirene_last_check_relative = "%d hour%s ago" % (h, "s" if h > 1 else "")
+                rec.sirene_last_check_relative = f"{h} hour{'s' if h > 1 else ''} ago"
             elif diff.days < 30:
-                rec.sirene_last_check_relative = "%d day%s ago" % (diff.days, "s" if diff.days > 1 else "")
+                rec.sirene_last_check_relative = f"{diff.days} day{'s' if diff.days > 1 else ''} ago"
             elif diff.days < 365:
                 m = diff.days // 30
-                rec.sirene_last_check_relative = "%d month%s ago" % (m, "s" if m > 1 else "")
+                rec.sirene_last_check_relative = f"{m} month{'s' if m > 1 else ''} ago"
             else:
                 y = diff.days // 365
-                rec.sirene_last_check_relative = "%d year%s ago" % (y, "s" if y > 1 else "")
+                rec.sirene_last_check_relative = f"{y} year{'s' if y > 1 else ''} ago"
 
     @api.depends("is_company", "vat")
     def _compute_sirene_eligible(self):
         for rec in self:
-            rec.sirene_eligible = rec.is_company and (rec.vat or "").upper().startswith(
-                "FR"
-            )
+            rec.sirene_eligible = rec.is_company and (rec.vat or "").upper().startswith("FR")
 
     def _get_siren_from_vat(self):
         """Extract the 9-digit SIREN from a French VAT number.
@@ -187,27 +188,48 @@ class ResPartner(models.Model):
             division = int((naf or "")[:2])
         except ValueError:
             return ""
-        if division <= 3:   return "A"
-        if division <= 9:   return "B"
-        if division <= 33:  return "C"
-        if division == 35:  return "D"
-        if division <= 39:  return "E"
-        if division <= 43:  return "F"
-        if division <= 47:  return "G"
-        if division <= 53:  return "H"
-        if division <= 56:  return "I"
-        if division <= 63:  return "J"
-        if division <= 66:  return "K"
-        if division == 68:  return "L"
-        if division <= 75:  return "M"
-        if division <= 82:  return "N"
-        if division == 84:  return "O"
-        if division == 85:  return "P"
-        if division <= 88:  return "Q"
-        if division <= 93:  return "R"
-        if division <= 96:  return "S"
-        if division <= 98:  return "T"
-        if division == 99:  return "U"
+        if division <= 3:
+            return "A"
+        if division <= 9:
+            return "B"
+        if division <= 33:
+            return "C"
+        if division == 35:
+            return "D"
+        if division <= 39:
+            return "E"
+        if division <= 43:
+            return "F"
+        if division <= 47:
+            return "G"
+        if division <= 53:
+            return "H"
+        if division <= 56:
+            return "I"
+        if division <= 63:
+            return "J"
+        if division <= 66:
+            return "K"
+        if division == 68:
+            return "L"
+        if division <= 75:
+            return "M"
+        if division <= 82:
+            return "N"
+        if division == 84:
+            return "O"
+        if division == 85:
+            return "P"
+        if division <= 88:
+            return "Q"
+        if division <= 93:
+            return "R"
+        if division <= 96:
+            return "S"
+        if division <= 98:
+            return "T"
+        if division == 99:
+            return "U"
         return ""
 
     def _get_industry_from_naf(self, naf):
@@ -219,9 +241,7 @@ class ResPartner(models.Model):
         section = self._naf_division_to_section(naf)
         if not section:
             return self.env["res.partner.industry"]
-        return self.env["res.partner.industry"].search(
-            [("full_name", "like", section + " -")], limit=1
-        )
+        return self.env["res.partner.industry"].search([("full_name", "like", section + " -")], limit=1)
 
     def _get_sirene_config(self):
         ICP = self.env["ir.config_parameter"].sudo()
@@ -269,26 +289,16 @@ class ResPartner(models.Model):
             sirene_val = result.get(odoo_field, "") or ""
             odoo_val = getattr(self, odoo_field) or ""
             if sirene_val.strip() != odoo_val.strip():
-                diffs.append(
-                    "%s: '%s' → '%s'" % (label, odoo_val, sirene_val)
-                    if verbose
-                    else label
-                )
+                diffs.append(f"{label}: '{odoo_val}' → '{sirene_val}'" if verbose else label)
 
         denomination = staging_vals["sirene_denomination"]
         if denomination.strip() and denomination.strip() != (self.name or "").strip():
-            diffs.append(
-                "Legal Name: '%s' → '%s'" % (self.name or "", denomination)
-                if verbose
-                else "Legal Name"
-            )
+            diffs.append(f"Legal Name: '{self.name or ''}' → '{denomination}'" if verbose else "Legal Name")
 
         siret_siege = staging_vals["sirene_siret_siege"]
         if siret_siege.strip() != (self.siret or "").strip():
             diffs.append(
-                "SIRET (Head Office): '%s' → '%s'" % (self.siret or "", siret_siege)
-                if verbose
-                else "SIRET (Head Office)"
+                f"SIRET (Head Office): '{self.siret or ''}' → '{siret_siege}'" if verbose else "SIRET (Head Office)"
             )
 
         siege = self.sirene_etablissement_ids.filtered(lambda e: e.is_siege)
@@ -297,29 +307,15 @@ class ResPartner(models.Model):
                 sirene_val = (getattr(siege[0], odoo_field) or "").strip()
                 odoo_val = (getattr(self, odoo_field) or "").strip()
                 if sirene_val != odoo_val:
-                    diffs.append(
-                        "%s: '%s' → '%s'" % (odoo_field, odoo_val, sirene_val)
-                        if verbose
-                        else odoo_field
-                    )
+                    diffs.append(f"{odoo_field}: '{odoo_val}' → '{sirene_val}'" if verbose else odoo_field)
 
         france = self.env["res.country"].search([("code", "=", "FR")], limit=1)
         if france and self.country_id != france:
-            diffs.append(
-                "Country: '%s' → 'France'" % (self.country_id.name or "")
-                if verbose
-                else "Country"
-            )
+            diffs.append(f"Country: '{self.country_id.name or ''}' → 'France'" if verbose else "Country")
 
-        industry = self.env["res.partner.industry"].browse(
-            staging_vals.get("sirene_industry_id") or 0
-        )
+        industry = self.env["res.partner.industry"].browse(staging_vals.get("sirene_industry_id") or 0)
         if industry and self.industry_id != industry:
-            diffs.append(
-                "Industry: '%s' → '%s'" % (self.industry_id.name or "", industry.name)
-                if verbose
-                else "Industry"
-            )
+            diffs.append(f"Industry: '{self.industry_id.name or ''}' → '{industry.name}'" if verbose else "Industry")
 
         return diffs
 
@@ -363,9 +359,7 @@ class ResPartner(models.Model):
                     "sirene_last_check_date": fields.Datetime.now(),
                 }
             )
-            raise UserError(
-                _("Error calling INSEE SIRENE API:\n%s") % str(exc)
-            ) from exc
+            raise UserError(_("Error calling INSEE SIRENE API:\n%s") % str(exc)) from exc
 
         staging_vals = self._build_staging_vals(result)
 
@@ -374,9 +368,7 @@ class ResPartner(models.Model):
         diffs = self._detect_differences(staging_vals, result, verbose=True)
 
         if not diffs:
-            _logger.info(
-                "SIRENE [%s]: data up to date — no differences detected.", self.name
-            )
+            _logger.info("SIRENE [%s]: data up to date — no differences detected.", self.name)
             staging_vals["sirene_sync_state"] = "ok"
             self.write(staging_vals)
             return {
@@ -412,9 +404,7 @@ class ResPartner(models.Model):
     def _sync_sirene_etablissements(self, siren, api_key, timeout):
         """Fetch and refresh the list of establishments from SIRENE API."""
         try:
-            etablissements = fetch_sirene_etablissements(
-                siren, api_key, timeout=timeout
-            )
+            etablissements = fetch_sirene_etablissements(siren, api_key, timeout=timeout)
         except Exception as exc:
             _logger.warning(
                 "SIRENE [%s]: unable to retrieve establishments for SIREN %s — %s",
@@ -433,9 +423,7 @@ class ResPartner(models.Model):
         )
         self.sudo().sirene_etablissement_ids.unlink()
         if etablissements:
-            self.env["sirene.etablissement"].sudo().create(
-                [dict(etab, partner_id=self.id) for etab in etablissements]
-            )
+            self.env["sirene.etablissement"].sudo().create([dict(etab, partner_id=self.id) for etab in etablissements])
 
     def _cron_sync_one(self, api_key, timeout):
         """Synchronise a partner from the SIRENE API (cron usage — no wizard)."""
@@ -502,18 +490,14 @@ class ResPartner(models.Model):
         ICP = self.env["ir.config_parameter"].sudo()
         api_key = ICP.get_param("l10n_fr_sirene_sync.api_key", "")
         if not api_key:
-            _logger.warning(
-                "SIRENE cron: API key not configured — synchronisation cancelled."
-            )
+            _logger.warning("SIRENE cron: API key not configured — synchronisation cancelled.")
             return
         try:
             timeout = int(ICP.get_param("l10n_fr_sirene_sync.api_timeout", "10"))
         except (ValueError, TypeError):
             timeout = 10
         try:
-            batch_limit = int(
-                ICP.get_param("l10n_fr_sirene_sync.cron_batch_limit", "500")
-            )
+            batch_limit = int(ICP.get_param("l10n_fr_sirene_sync.cron_batch_limit", "500"))
         except (ValueError, TypeError):
             batch_limit = 10
 

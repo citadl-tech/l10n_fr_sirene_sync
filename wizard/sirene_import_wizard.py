@@ -1,8 +1,10 @@
-import re
 import logging
-from odoo import models, fields, _
+import re
+
+from odoo import _, fields, models
 from odoo.exceptions import UserError
-from ..models.sirene_api import fetch_sirene_data, fetch_sirene_etablissements, SireneAPIError
+
+from ..models.sirene_api import SireneAPIError, fetch_sirene_data, fetch_sirene_etablissements
 
 _logger = logging.getLogger(__name__)
 
@@ -98,12 +100,14 @@ class SireneImportWizard(models.TransientModel):
         except Exception:
             _logger.warning("SIRENE import: could not retrieve establishments for %s", siren)
 
-        existing = self.env["res.partner"].search(
-            [("siren", "=", siren), ("is_company", "=", True)], limit=1
-        )
-        archived = self.env["res.partner"].with_context(active_test=False).search(
-            [("siren", "=", siren), ("is_company", "=", True), ("active", "=", False)],
-            limit=1,
+        existing = self.env["res.partner"].search([("siren", "=", siren), ("is_company", "=", True)], limit=1)
+        archived = (
+            self.env["res.partner"]
+            .with_context(active_test=False)
+            .search(
+                [("siren", "=", siren), ("is_company", "=", True), ("active", "=", False)],
+                limit=1,
+            )
         )
 
         self.write(
@@ -139,7 +143,7 @@ class SireneImportWizard(models.TransientModel):
         Key = (12 + 3 * (SIREN % 97)) % 97
         """
         key = (12 + 3 * (int(siren) % 97)) % 97
-        return "FR%02d%s" % (key, siren)
+        return f"FR{key:02d}{siren}"
 
     def _open_partner_action(self, partner):
         return {
@@ -183,13 +187,9 @@ class SireneImportWizard(models.TransientModel):
 
         config = self.env["res.partner"]._get_sirene_config()
         try:
-            partner._sync_sirene_etablissements(
-                self.preview_siren, config["api_key"], config["timeout"]
-            )
+            partner._sync_sirene_etablissements(self.preview_siren, config["api_key"], config["timeout"])
         except Exception:
-            _logger.warning(
-                "SIRENE import: could not sync establishments for partner %s", partner.id
-            )
+            _logger.warning("SIRENE import: could not sync establishments for partner %s", partner.id)
 
         _logger.info(
             "SIRENE import: partner '%s' (SIREN %s) created — id=%s",

@@ -1,4 +1,4 @@
-from odoo import models, fields, api, _
+from odoo import _, api, fields, models
 
 # Explicit whitelist of partner fields that this wizard is allowed to update.
 _ALLOWED_WRITE_FIELDS = frozenset(
@@ -151,9 +151,7 @@ class SireneValidationWizard(models.TransientModel):
     def action_ignore(self):
         self.ensure_one()
         self.partner_id.write({"sirene_sync_state": "ignored"})
-        self.partner_id.message_post(
-            body=_("SIRENE update: changes ignored by the user.")
-        )
+        self.partner_id.message_post(body=_("SIRENE update: changes ignored by the user."))
         return {"type": "ir.actions.act_window_close"}
 
 

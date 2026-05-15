@@ -1,0 +1,32 @@
+[tool.ruff]
+line-length = 120
+target-version = "py311"
+
+[tool.ruff.lint]
+select = [
+    "E",   # pycodestyle errors
+    "W",   # pycodestyle warnings
+    "F",   # pyflakes
+    "B",   # flake8-bugbear
+    "I",   # isort
+    "S",   # flake8-bandit (basic security)
+    "UP",  # pyupgrade
+]
+ignore = [
+    "B018",  # found useless expression — Odoo uses string literals as section headers
+    "S101",  # assert used — Odoo test framework relies on assert
+    "S311",  # pseudo-random generator — used for non-security purposes in Odoo
+]
+
+[tool.ruff.lint.per-file-ignores]
+"**/__init__.py" = ["F401"]       # Odoo side-effect imports
+"models/naf_codes.py" = ["E501"]  # NAF label strings cannot be shortened
+"models/legal_form_codes.py" = ["E501"]
+"tests/**/*.py" = ["S"]
+
+[tool.bandit]
+exclude_dirs = ["tests", "static"]
+skips = [
+    "B101",  # assert_used — Odoo test framework
+    "B311",  # random — non-security usage in Odoo context
+]
