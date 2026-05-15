@@ -359,7 +359,18 @@ class ResPartner(models.Model):
                     "sirene_last_check_date": fields.Datetime.now(),
                 }
             )
-            raise UserError(_("Error calling INSEE SIRENE API:\n%s") % str(exc)) from exc
+            # Returning a notification instead of raising UserError: raising would
+            # cause Odoo's savepoint mechanism to roll back the state write above.
+            return {
+                "type": "ir.actions.client",
+                "tag": "display_notification",
+                "params": {
+                    "title": _("SIRENE Error"),
+                    "message": _("Error calling INSEE SIRENE API:\n%s") % str(exc),
+                    "type": "danger",
+                    "sticky": True,
+                },
+            }
 
         staging_vals = self._build_staging_vals(result)
 
