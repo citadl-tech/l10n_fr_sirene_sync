@@ -9,18 +9,21 @@
 
             <!-- SIRENE status badge below VAT field -->
             <xpath expr="//field[@name='vat']" position="after">
-                <field name="sirene_sync_state"
-                       widget="badge"
-                       string="SIRENE Status"
-                       decoration-success="sirene_sync_state == 'ok'"
-                       decoration-warning="sirene_sync_state == 'pending'"
-                       decoration-danger="sirene_sync_state == 'error'"
-                       decoration-muted="sirene_sync_state in ('unchecked', 'ignored')"
-                       invisible="not sirene_eligible or not vat"
-                       readonly="1"/>
-                <field name="sirene_last_check_relative"
-                       invisible="not sirene_eligible or not vat or not sirene_last_check_date"
-                       readonly="1"/>
+                <label for="sirene_sync_state" string="SIRENE"
+                       invisible="not sirene_eligible or not vat"/>
+                <div class="d-flex align-items-center gap-2"
+                     invisible="not sirene_eligible or not vat">
+                    <field name="sirene_sync_state"
+                           widget="badge"
+                           decoration-success="sirene_sync_state == 'ok'"
+                           decoration-warning="sirene_sync_state == 'pending'"
+                           decoration-danger="sirene_sync_state == 'error'"
+                           decoration-muted="sirene_sync_state in ('unchecked', 'ignored')"
+                           readonly="1" nolabel="1"/>
+                    <field name="sirene_last_check_relative"
+                           invisible="not sirene_last_check_date"
+                           readonly="1" nolabel="1"/>
+                </div>
             </xpath>
 
             <!-- SIREN field below Reference -->
